@@ -121,7 +121,6 @@ func main() {
 }
 
 func readPath(path string) (out PDFZap, err error) {
-	//fmt.Printf("path:%s\n", path)
 	// проверим на существование
 	if _, err = os.Stat(path); os.IsNotExist(err) {
 		return
@@ -142,12 +141,13 @@ func readPath(path string) (out PDFZap, err error) {
 				}
 				out.PageCount += PageCount
 				out.FileCount++
-				fmt.Printf("%d\r", out.FileCount) // выводим на экран счётчик обработки файлов
+				if *fileNameOut == "" {
+					fmt.Printf("%d\r", out.FileCount) // выводим на экран счётчик обработки файлов
+				}
 			}
 		}
 		return nil
 	})
-	//fmt.Printf("%#v", out)
 	return out, nil
 }
 
