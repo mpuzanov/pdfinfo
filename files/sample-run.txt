@@ -1,0 +1,13 @@
+# for Windows
+./pdfinfo test.pdf "H:\_Печать\ивц\2 этап 23дома\10 лет Октября 2\2.pdf"
+./pdfinfo test.pdf "H:\_Печать"
+./pdfinfo "H:\_Печать"
+./pdfinfo "H:\_Печать" > out.json
+./pdfinfo < in_file_win.txt
+
+# for Linux
+./pdfinfo files/test.pdf
+./pdfinfo "/media/sf_H_DRIVE/_Печать"
+./pdfinfo "/media/sf_H_DRIVE/_Печать/ивц/2 этап 23дома/10 лет Октября 2/2.pdf"
+./pdfinfo < files/in_file_linux.txt > files/out.json 2>files/err.txt
+./pdfinfo -format csv -i /media/sf_H_DRIVE/in_file.txt -o /media/sf_H_DRIVE/out_file.txt
