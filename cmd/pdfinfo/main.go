@@ -6,12 +6,12 @@ package main
 import (
 	"bufio"
 	"encoding/json"
-	"flag"
+	
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
-
+	"flag"
 	"github.com/ledongthuc/pdf"
 )
 
