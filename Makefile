@@ -1,13 +1,15 @@
-SOURCE=./cmd/pdfinfo
-BINARY=pdfinfo
+SOURCE=.
+APP=pdfinfo
 BINARY_DIR=bin
 
 build :
-	go build -v -o ${BINARY} ${SOURCE}
+	go build -v -o ${APP} ${SOURCE}
 
-run : build
-	./${BINARY} < files/in_file_linux.txt
-	#go run ${SOURCE}
+run :
+	go run ${SOURCE} < files/in_file_linux.txt
+
+clean:
+	rm -rf ${APP}
 
 cov : all
 	go test -v -coverprofile=coverage && go tool cover -html=coverage -o=coverage.html
@@ -19,9 +21,8 @@ check :
 
 release:
 	./scripts/build-release.sh ${BINARY_DIR}
-	#GOOS=windows GOARCH=386 go build -o ${BINARY_DIR}/win/$(BINARY).exe ${SOURCE}
-	GOOS=windows GOARCH=amd64 go build -o ${BINARY_DIR}/win/${BINARY}.exe ${SOURCE}
-	GOOS=linux GOARCH=amd64 go build -o ${BINARY_DIR}/linux/${BINARY} ${SOURCE}
+	GOOS=windows GOARCH=amd64 go build -o ${BINARY_DIR}/win/${APP}.exe ${SOURCE}
+	GOOS=linux GOARCH=amd64 go build -o ${BINARY_DIR}/linux/${APP} ${SOURCE}
 
 
-.PHONY: build run cov check
+.PHONY: build run cov check clean
