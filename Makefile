@@ -8,6 +8,9 @@ build :
 run :
 	go run ${SOURCE} < files/in_file_linux.txt
 
+runwin :
+	go run ${SOURCE} < files/in_file_win.txt
+
 clean:
 	rm -rf ${APP}
 
@@ -21,8 +24,8 @@ check :
 
 release:
 	./scripts/build-release.sh ${BINARY_DIR}
-	GOOS=windows GOARCH=amd64 go build -o ${BINARY_DIR}/win/${APP}.exe ${SOURCE}
-	GOOS=linux GOARCH=amd64 go build -o ${BINARY_DIR}/linux/${APP} ${SOURCE}
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o ${BINARY_DIR}/win/${APP}.exe ${SOURCE}
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ${BINARY_DIR}/linux/${APP} ${SOURCE}
 
 
 .PHONY: build run cov check clean

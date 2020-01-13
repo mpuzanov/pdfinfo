@@ -13,7 +13,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
 )
 
 var (
@@ -65,13 +64,14 @@ func main() {
 	}
 
 	//fmt.Println(files)
-	coutFiles := make(chan int)
+	countFiles := make(chan int)
 	var n sync.WaitGroup
+
 	for _, file := range files {
 		n.Add(1)
 		go func(file string) {
 			defer n.Done()
-			p, err := pi.ReadPath(file, coutFiles)
+			p, err := pi.ReadPath(file, countFiles)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			} else {
@@ -81,12 +81,15 @@ func main() {
 	}
 	go func() {
 		n.Wait()
-		close(coutFiles)
+		close(countFiles)
 	}()
 
-	// Print the results periodically.
-	var tick <-chan time.Time
+	var showProgres bool
 	if *resultToFile == "" {
+		showProgres = true
+	}
+	var tick <-chan time.Time // Print the results periodically.
+	if showProgres {
 		tick = time.Tick(500 * time.Millisecond)
 	}
 	var nfiles int64
@@ -94,13 +97,13 @@ func main() {
 	func() {
 		for {
 			select {
-			case _, ok := <-coutFiles:
+			case _, ok := <-countFiles:
 				if !ok {
 					return // канал закрыт - выходим
 				}
 				nfiles++
 			case <-tick:
-				if *resultToFile == "" {
+				if showProgres {
 					fmt.Printf("Обработано: %d\r", nfiles) // выводим на экран счётчик обработки файлов
 				}
 			}
@@ -151,7 +154,7 @@ func printPdfInfo(pdfinfo pi.PDFResult, format string, resultToFile string) erro
 		}
 		defer f.Close()
 		fmt.Fprintf(f, "%s", text)
-		fmt.Printf("Создан файл: %s\n", resultToFile)
+		fmt.Printf("Результат записан в файл: %s\n", resultToFile)
 	}
 	return nil
 }
