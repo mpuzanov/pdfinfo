@@ -1,4 +1,4 @@
-SOURCE=.
+SOURCE=./cmd/pdfinfo
 APP=pdfinfo
 BINARY_DIR=bin
 
@@ -18,7 +18,7 @@ cov : all
 	go test -v -coverprofile=coverage && go tool cover -html=coverage -o=coverage.html
 
 check :
-	~/go/bin/golint ${SOURCE}
+	golint ${SOURCE}
 	go vet -all ${SOURCE}
 	gofmt -s -l ${SOURCE}
 
