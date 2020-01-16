@@ -1,6 +1,14 @@
 SOURCE=./cmd/pdfinfo
 APP=pdfinfo
 BINARY_DIR=bin
+GO_SRC_DIRS := $(shell \
+	find . -name "*.go" -not -path "./vendor/*" | \
+	xargs -I {} dirname {}  | \
+	uniq)
+GO_TEST_DIRS := $(shell \
+	find . -name "*_test.go" -not -path "./vendor/*" | \
+	xargs -I {} dirname {}  | \
+	uniq)	
 
 build :
 	go build -v -o ${APP} ${SOURCE}
@@ -18,9 +26,12 @@ cov : all
 	go test -v -coverprofile=coverage && go tool cover -html=coverage -o=coverage.html
 
 check :
+	@echo "SRC  = $(GO_SRC_DIRS)"
+	@echo "TEST = $(GO_TEST_DIRS)"
+
 	golint ${SOURCE}
-	go vet -all ${SOURCE}
-	gofmt -s -l ${SOURCE}
+	go vet -all ${SOURCE}	
+	gofmt -s -w $(GO_SRC_DIRS)
 
 release:
 	./scripts/build-release.sh ${BINARY_DIR}
