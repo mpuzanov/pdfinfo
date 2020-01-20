@@ -10,7 +10,9 @@ GO_TEST_DIRS := $(shell \
 	xargs -I {} dirname {}  | \
 	uniq)	
 
-build :
+.DEFAULT_GOAL = build 
+
+build : lint
 	go build -v -o ${APP} ${SOURCE}
 
 run :
@@ -25,13 +27,12 @@ clean:
 cov : all
 	go test -v -coverprofile=coverage && go tool cover -html=coverage -o=coverage.html
 
-check :
-	@echo "SRC  = $(GO_SRC_DIRS)"
-	@echo "TEST = $(GO_TEST_DIRS)"
+lint :
+	golangci-lint run
 
-	golint ${SOURCE}
-	go vet -all ${SOURCE}	
-	gofmt -s -w $(GO_SRC_DIRS)
+	@#golint ${SOURCE}
+	@#go vet -all ${SOURCE}	
+	@#gofmt -s -w $(GO_SRC_DIRS)
 
 release:
 	./scripts/build-release.sh ${BINARY_DIR}

@@ -44,7 +44,7 @@ func ReadPath(path string, coutFiles chan<- int) (out PDFZap, err error) {
 
 	out.Path = path
 	// ищем файлы пдф в каталоге и в подкаталогах
-	filepath.Walk(path, func(path string, f os.FileInfo, err error) error {
+	err = filepath.Walk(path, func(path string, f os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -65,6 +65,9 @@ func ReadPath(path string, coutFiles chan<- int) (out PDFZap, err error) {
 		}
 		return nil
 	})
+	if err != nil {
+		return out, err
+	}
 	return out, nil
 }
 
