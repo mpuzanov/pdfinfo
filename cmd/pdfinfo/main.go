@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	pi "pdfinfo/pkg/infopdf"
 	"strings"
 	"sync"
 	"time"
+
+	pi "pdfinfo/pkg/infopdf"
 )
 
 var (
