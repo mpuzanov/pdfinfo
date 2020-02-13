@@ -1,6 +1,5 @@
-[![Build Status](https://github.com/mpuzanov/pdfinfo/badges/master/build.svg)](https://github.com/mpuzanov/pdfinfo/commits/master)
-[![Coverage Report](https://github.com/mpuzanov/pdfinfo/badges/master/coverage.svg)](https://github.com/mpuzanov/pdfinfo/commits/master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mpuzanov/pdfinfo)](https://goreportcard.com/report/github.com/mpuzanov/pdfinfo)
+
 [![License MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://img.shields.io/badge/License-MIT-brightgreen.svg)
 
 # Программа для получения информации о PDF-файле  
