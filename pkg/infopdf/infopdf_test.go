@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetPageCountPdf(t *testing.T) {
-	fileName := "./../../example/test_file.pdf"
+	fileName := "./../../example/test.pdf"
 	want := 2
 	got, err := pi.GetPageCountPdf(fileName)
 	if err != nil {
