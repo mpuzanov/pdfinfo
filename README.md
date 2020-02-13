@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/mpuzanov/pdfinfo.svg?branch=master)](https://travis-ci.org/mpuzanov/pdfinfo)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mpuzanov/pdfinfo)](https://goreportcard.com/report/github.com/mpuzanov/pdfinfo)
 [![License MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://img.shields.io/badge/License-MIT-brightgreen.svg)
 
