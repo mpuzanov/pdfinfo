@@ -6,8 +6,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"pdfinfo/pkg/logger"
+
 	"github.com/ledongthuc/pdf"
 )
+
+var log = logger.GetLogger()
 
 //PDFZap структура одной записи с результатом
 type PDFZap struct {
@@ -36,15 +40,16 @@ func (o *PDFResult) ToCSV() string {
 }
 
 //ReadPath ...
-func ReadPath(path string, coutFiles chan<- int) (out PDFZap, err error) {
+func ReadPath(path string, coutFiles chan<- int) (PDFZap, error) {
+	out := PDFZap{}
 	// проверим на существование
-	if _, err = os.Stat(path); os.IsNotExist(err) {
-		return
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return out, err
 	}
 
 	out.Path = path
 	// ищем файлы пдф в каталоге и в подкаталогах
-	err = filepath.Walk(path, func(path string, f os.FileInfo, err error) error {
+	err := filepath.Walk(path, func(path string, f os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -52,6 +57,7 @@ func ReadPath(path string, coutFiles chan<- int) (out PDFZap, err error) {
 		if !f.IsDir() { // если файл
 
 			if filepath.Ext(path) == ".pdf" { // проверяем, что pdf
+				log.Debugw("проверяем, что pdf", "path", path)
 				PageCount, err := GetPageCountPdf(path)
 				if err != nil {
 					return err
