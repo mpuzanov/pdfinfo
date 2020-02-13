@@ -11,6 +11,7 @@ import (
 	"time"
 
 	pi "pdfinfo/pkg/infopdf"
+	"pdfinfo/pkg/logger"
 )
 
 var (
@@ -20,42 +21,44 @@ var (
 	formats      = map[string]string{"json": ".json", "csv": ".csv"}
 )
 
+var log = logger.GetLogger()
+
 func main() {
 	flag.Parse()
 	flag.Args()
 
 	if _, exists := formats[*format]; !exists {
-		fmt.Printf("format output <%s> unknown", *format)
-		os.Exit(1)
+		log.Fatalf("format output <%s> unknown", *format)
 	}
 
 	var pdfinfo pi.PDFResult
 	pdfinfo = make(pi.PDFResult, 0)
 	files := flag.Args()
+	//logger.SetDebug()
 
 	if len(files) == 0 {
 
 		if *fileNameIn != "" {
 			file, err := os.Open(*fileNameIn)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				log.Errorf("Error: %v\n", err)
 				return
 			}
 			defer file.Close()
 			if err := readFileFromInput(file, &files); err != nil {
-				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				log.Errorf("Error: %v\n", err)
 				return
 			}
 		} else {
 			StdinInfo, _ := os.Stdin.Stat()
 			if StdinInfo.Size() == 0 {
 				prog := filepath.Base(os.Args[0])
-				fmt.Println("Usage:", prog, "<pdf-file(dir)> ...")
+				log.Info("Usage:", prog, "<pdf-file(dir)> ...")
 				return
 			}
 			err := readFileFromInput(os.Stdin, &files)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				log.Errorf("Error: %v\n", err)
 				return
 			}
 		}
@@ -71,7 +74,7 @@ func main() {
 			defer n.Done()
 			p, err := pi.ReadPath(file, countFiles)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				log.Errorf("Error: %v\n", err)
 			} else {
 				pdfinfo = append(pdfinfo, p)
 			}
@@ -102,7 +105,7 @@ func main() {
 				nfiles++
 			case <-tick:
 				if showProgres {
-					fmt.Printf("Обработано: %d\r", nfiles) // выводим на экран счётчик обработки файлов
+					log.Infof("Обработано: %d\r", nfiles) // выводим на экран счётчик обработки файлов
 				}
 			}
 		}
@@ -110,10 +113,8 @@ func main() {
 
 	err := printPdfInfo(pdfinfo, *format, *resultToFile)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Error: %v\n", err)
 	}
-
 }
 
 //readFileFromInput Заполняем список файлов files для обработки из входного потока или файла
@@ -152,7 +153,7 @@ func printPdfInfo(pdfinfo pi.PDFResult, format string, resultToFile string) erro
 		}
 		defer f.Close()
 		fmt.Fprintf(f, "%s", text)
-		fmt.Printf("Результат записан в файл: %s\n", resultToFile)
+		log.Infof("Результат записан в файл: %s\n", resultToFile)
 	}
 	return nil
 }
