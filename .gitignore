@@ -5,9 +5,6 @@
 *.so
 *.dylib
 *.log
-*.yaml
-*.yml
-*.json
 *.tmp
 
 # Test binary, build with `go test -c`

@@ -1,0 +1,8 @@
+linters-settings:
+    goimports:
+        local-prefixes: pdfinfo/
+linters:
+    enable:      
+      - govet
+      - golint
+      - gocyclo
