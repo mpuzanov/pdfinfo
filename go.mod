@@ -1,10 +1,13 @@
 module pdfinfo
 
-go 1.13
+go 1.19
 
 require (
-	github.com/ledongthuc/pdf v0.0.0-20190830105003-8ac343ec9fdd
-	go.uber.org/zap v1.13.0
-	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
-	golang.org/x/tools v0.0.0-20200124170513-3f4d10fc73b4 // indirect
+	github.com/ledongthuc/pdf v0.0.0-20220302134840-0c2507a12d80
+	go.uber.org/zap v1.24.0
+)
+
+require (
+	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/multierr v1.6.0 // indirect
 )
